@@ -1,8 +1,13 @@
 // SPDX-License-Identifier: MIT
 
+import { IERC721 } from "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol";
+
 pragma solidity 0.8.19;
 
 contract MonsEngine {
+
+    IERC721 mons;
+
     error UserIsAlreadyInQue();
     error UserIsNotInQue();
     error MsgSenderIsNotUser();
@@ -65,7 +70,7 @@ contract MonsEngine {
         uint256 exp;
     }
 
-    function enterQue(address _user, uint256[] memory _mons) public {
+    function enterQue(address _user, uint256[] memory _mons) external {
         uint256 length = _mons.length;
         
         if(_user != msg.sender) revert MsgSenderIsNotUser();
@@ -84,7 +89,7 @@ contract MonsEngine {
         ++playersInQue;
     }
 
-    function leaveQue(address _user) public {
+    function leaveQue(address _user) external {
 
         if(_user != msg.sender) revert MsgSenderIsNotUser();
         userParty[msg.sender] = emptyArray;
@@ -96,7 +101,7 @@ contract MonsEngine {
         --playersInQue;
     }
 
-    function findMatch(address _user) public {
+    function findMatch(address _user) external {
         if(_user != msg.sender) revert MsgSenderIsNotUser();
         if(!userInMatchMakeQue[msg.sender]) revert UserIsNotInQue();
         if(queTime[msg.sender] > block.number + queLockPeriod) revert QueTimeViolation();
