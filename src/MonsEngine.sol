@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: MIT
+pragma solidity 0.8.19;
 
 import { IERC721 } from "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol";
-
-pragma solidity 0.8.19;
 
 contract MonsEngine {
 

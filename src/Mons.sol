@@ -1,24 +1,30 @@
 // SPDX-License-Identifier: MIT
-
 pragma solidity 0.8.19;
 
 import { ERC721 } from "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol";
 import { Ownable } from "lib/openzeppelin-contracts/contracts/access/Ownable.sol";
+import { IERC20 } from "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 
 contract Mons is Ownable, ERC721 {
+
+    IERC20 monsRewardToken = IERC20(monsRewardTokenAddress);
 
     error MsgSenderIsNotOwner();
 
     uint256 public currentTokenId;
     string public baseURI;
+    address public monsRewardTokenAddress;
 
     // Mons TokenID => Blocknumber Minted At
     mapping(uint256 => uint256) public monsBlockNumber;
 
     constructor(
         string memory name, 
-        string memory symbol
-    ) ERC721(name, symbol) {}
+        string memory symbol,
+        address rewardToken
+    ) ERC721(name, symbol) {
+        monsRewardTokenAddress = rewardToken;
+    }
 
 // Sets the block number the tokenID is minted at - for reward calculation
     function safeMint(address to) public {
@@ -34,7 +40,7 @@ contract Mons is Ownable, ERC721 {
         uint256 reward = block.number - monsBlockNumber[_tokenId];
         monsBlockNumber[_tokenId] = block.number;
 
-        //rewardsToken.mint(_msg.sender(), reward);
+        monsRewardToken.mint(_to, reward);
     }
 
     function checkRewardsAllocated(uint256 _tokenId) external view returns (uint256){
