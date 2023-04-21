@@ -1,0 +1,5 @@
+# Mons Game Engine, Collection Contract, and reward ERC20
+
+A simple on-chain battle simulator. Assign a party of 4 Mons and enter que. Winning a battle will gain the Mon some exp. The Mons will level up, based on exp gained. Leveling up will increase the defense and attack, as well as the Mons health pool.
+
+The mons collection has a simple passive reward system implemented as an ERC20 token. When minted the mon will be assigned a block number, the block at time of mint. Every block after mint, will allocate a claimable allowance for the holder, tied to the tokenID itself. Once the reward is claimed, the `monsBlockNumber` will be set to the block number the reward was claimed on. This is probably an example of a security. If you use this method of passive rewards on an NFT, keep this in mind. This probably shouldnt be used in production, you're on your own if you do use it in production.
